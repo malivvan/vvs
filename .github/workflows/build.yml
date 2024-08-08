@@ -26,15 +26,20 @@ jobs:
           SIGNING_PUB: ${{ vars.SIGNING_PUB }}
         run: make verify
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_checksums.txt
+        name: Upload vvs_checksums.txt
         with:
           name: vvs_checksums.txt
           path: |
             build/vvs_checksums.txt
             build/vvs_checksums.txt.minisig
           compression-level: 9
+          run: | 
+            echo -n "vvs_checksums.txt;" > artifacts.csv
+            echo -n "${{ steps.artifact-upload-step.outputs.artifact-id }};" >> artifacts.csv
+            echo "${{ steps.artifact-upload-step.outputs.artifact-url }}" >> artifacts.csv
+            cat artifacts.csv
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_checksums.txt.json
+        name: Upload vvs_checksums.txt.json
         with:
           name: vvs_linux_amd64
           path: |
@@ -42,7 +47,7 @@ jobs:
             build/vvs_linux_amd64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_amd64.json
+        name: Upload vvs_linux_amd64.json
         with:
           name: vvs_linux_amd64.json
           path: |
@@ -50,7 +55,7 @@ jobs:
             build/vvs_linux_amd64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_arm64
+        name: Upload vvs_linux_arm64
         with:
           name: vvs_linux_arm64
           path: |
@@ -58,7 +63,7 @@ jobs:
             build/vvs_linux_arm64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_arm64.json
+        name: Upload vvs_linux_arm64.json
         with:
           name: vvs_linux_arm64.json
           path: |
@@ -66,7 +71,7 @@ jobs:
             build/vvs_linux_arm64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_386
+        name: Upload vvs_linux_386
         with:
           name: vvs_linux_386
           path: |
@@ -74,7 +79,7 @@ jobs:
             build/vvs_linux_386.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_386.json
+        name: Upload vvs_linux_386.json
         with:
           name: vvs_linux_386.json
           path: |
@@ -82,7 +87,7 @@ jobs:
             build/vvs_linux_386.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_arm
+        name: Upload vvs_linux_arm
         with:
           name: vvs_linux_arm
           path: |
@@ -90,7 +95,7 @@ jobs:
             build/vvs_linux_arm.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_arm.json
+        name: Upload vvs_linux_arm.json
         with:
           name: vvs_linux_arm.json
           path: |
@@ -98,7 +103,7 @@ jobs:
             build/vvs_linux_arm.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_riscv64
+        name: Upload vvs_linux_riscv64
         with:
           name: vvs_linux_riscv64
           path: |
@@ -106,7 +111,7 @@ jobs:
             build/vvs_linux_riscv64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_linux_riscv64.json
+        name: Upload vvs_linux_riscv64.json
         with:
           name: vvs_linux_riscv64.json
           path: |
@@ -114,7 +119,7 @@ jobs:
             build/vvs_linux_riscv64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_darwin_amd64
+        name: Upload vvs_darwin_amd64
         with:
           name: vvs_darwin_amd64
           path: |
@@ -122,7 +127,7 @@ jobs:
             build/vvs_darwin_amd64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_darwin_amd64.json
+        name: Upload vvs_darwin_amd64.json
         with:
           name: vvs_darwin_amd64.json
           path: |
@@ -130,7 +135,7 @@ jobs:
             build/vvs_darwin_amd64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_darwin_arm64
+        name: Upload vvs_darwin_arm64
         with:
           name: vvs_darwin_arm64
           path: |
@@ -138,7 +143,7 @@ jobs:
             build/vvs_darwin_arm64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_darwin_arm64.json
+        name: Upload vvs_darwin_arm64.json
         with:
           name: vvs_darwin_arm64.json
           path: |
@@ -146,7 +151,7 @@ jobs:
             build/vvs_darwin_arm64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_darwin_386
+        name: Upload vvs_darwin_386
         with:
           name: vvs_windows_amd64.exe
           path: |
@@ -154,7 +159,7 @@ jobs:
             build/vvs_windows_amd64.exe.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_amd64.exe.json
+        name: Upload vvs_windows_amd64.exe.json
         with:
           name: vvs_windows_amd64.exe.json
           path: |
@@ -162,7 +167,7 @@ jobs:
             build/vvs_windows_amd64.exe.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_arm64.exe
+        name: Upload vvs_windows_arm64.exe
         with:
           name: vvs_windows_arm64.exe
           path: |
@@ -170,7 +175,7 @@ jobs:
             build/vvs_windows_arm64.exe.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_arm64.exe.json
+        name: Upload vvs_windows_arm64.exe.json
         with:
           name: vvs_windows_arm64.exe.json
           path: |
@@ -178,7 +183,7 @@ jobs:
             build/vvs_windows_arm64.exe.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_386.exe
+        name: Upload vvs_windows_386.exe
         with:
           name: vvs_windows_386.exe
           path: |
@@ -186,7 +191,7 @@ jobs:
             build/vvs_windows_386.exe.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_386.exe.json
+        name: Upload vvs_windows_386.exe.json
         with:
           name: vvs_windows_386.exe.json
           path: |
@@ -194,7 +199,7 @@ jobs:
             build/vvs_windows_386.exe.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_arm.exe
+        name: Upload vvs_windows_arm.exe
         with:
           name: vvs_windows_arm.exe
           path: |
@@ -202,7 +207,7 @@ jobs:
             build/vvs_windows_arm.exe.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_arm.exe.json
+        name: Upload vvs_windows_arm.exe.json
         with:
           name: vvs_windows_arm.exe.json
           path: |
@@ -210,7 +215,7 @@ jobs:
             build/vvs_windows_arm.exe.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_windows_riscv64.exe
+        name: Upload vvs_windows_riscv64.exe
         with:
           name: vvs_freebsd_amd64
           path: |
@@ -218,7 +223,7 @@ jobs:
             build/vvs_freebsd_amd64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_amd64.json
+        name: Upload vvs_freebsd_amd64.json
         with:
           name: vvs_freebsd_amd64.json
           path: |
@@ -226,7 +231,7 @@ jobs:
             build/vvs_freebsd_amd64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_arm64
+        name: Upload vvs_freebsd_arm64
         with:
           name: vvs_freebsd_arm64
           path: |
@@ -234,7 +239,7 @@ jobs:
             build/vvs_freebsd_arm64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_arm64.json
+        name: Upload vvs_freebsd_arm64.json
         with:
           name: vvs_freebsd_arm64.json
           path: |
@@ -242,7 +247,7 @@ jobs:
             build/vvs_freebsd_arm64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_386
+        name: Upload vvs_freebsd_386
         with:
           name: vvs_freebsd_386
           path: |
@@ -250,7 +255,7 @@ jobs:
             build/vvs_freebsd_386.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_386.json
+        name: Upload vvs_freebsd_386.json
         with:
           name: vvs_freebsd_386.json
           path: |
@@ -258,7 +263,7 @@ jobs:
             build/vvs_freebsd_386.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_arm
+        name: Upload vvs_freebsd_arm
         with:
           name: vvs_freebsd_arm
           path: |
@@ -266,7 +271,7 @@ jobs:
             build/vvs_freebsd_arm.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_arm.json
+        name: Upload vvs_freebsd_arm.json
         with:
           name: vvs_freebsd_arm.json
           path: |
@@ -274,7 +279,7 @@ jobs:
             build/vvs_freebsd_arm.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_riscv64
+        name: Upload vvs_freebsd_riscv64
         with:
           name: vvs_freebsd_riscv64
           path: |
@@ -282,7 +287,7 @@ jobs:
             build/vvs_freebsd_riscv64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_freebsd_riscv64.json
+        name: Upload vvs_freebsd_riscv64.json
         with:
           name: vvs_freebsd_riscv64.json
           path: |
@@ -290,7 +295,7 @@ jobs:
             build/vvs_freebsd_riscv64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_amd64
+        name: Upload vvs_openbsd_amd64
         with:
           name: vvs_openbsd_amd64
           path: |
@@ -298,7 +303,7 @@ jobs:
             build/vvs_openbsd_amd64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_amd64.json
+        name: Upload vvs_openbsd_amd64.json
         with:
           name: vvs_openbsd_amd64.json
           path: |
@@ -306,7 +311,7 @@ jobs:
             build/vvs_openbsd_amd64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_arm64
+        name: Upload vvs_openbsd_arm64
         with:
           name: vvs_openbsd_arm64
           path: |
@@ -314,7 +319,7 @@ jobs:
             build/vvs_openbsd_arm64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_arm64.json
+        name: Upload vvs_openbsd_arm64.json
         with:
           name: vvs_openbsd_arm64.json
           path: |
@@ -322,7 +327,7 @@ jobs:
             build/vvs_openbsd_arm64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_386
+        name: Upload vvs_openbsd_386
         with:
           name: vvs_openbsd_386
           path: |
@@ -330,7 +335,7 @@ jobs:
             build/vvs_openbsd_386.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_386.json
+        name: Upload vvs_openbsd_386.json
         with:
           name: vvs_openbsd_386.json
           path: |
@@ -338,7 +343,7 @@ jobs:
             build/vvs_openbsd_386.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_arm
+        name: Upload vvs_openbsd_arm
         with:
           name: vvs_openbsd_arm
           path: |
@@ -346,7 +351,7 @@ jobs:
             build/vvs_openbsd_arm.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_openbsd_arm.json
+        name: Upload vvs_openbsd_arm.json
         with:
           name: vvs_openbsd_arm.json
           path: |
@@ -354,7 +359,7 @@ jobs:
             build/vvs_openbsd_arm.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_amd64
+        name: Upload vvs_netbsd_amd64
         with:
           name: vvs_netbsd_amd64
           path: |
@@ -362,7 +367,7 @@ jobs:
             build/vvs_netbsd_amd64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_amd64.json
+        name: Upload vvs_netbsd_amd64.json
         with:
           name: vvs_netbsd_amd64.json
           path: |
@@ -370,7 +375,7 @@ jobs:
             build/vvs_netbsd_amd64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_arm64
+        name: Upload vvs_netbsd_arm64
         with:
           name: vvs_netbsd_arm64
           path: |
@@ -378,7 +383,7 @@ jobs:
             build/vvs_netbsd_arm64.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_arm64.json
+        name: Upload vvs_netbsd_arm64.json
         with:
           name: vvs_netbsd_arm64.json
           path: |
@@ -386,7 +391,7 @@ jobs:
             build/vvs_netbsd_arm64.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_386
+        name: Upload vvs_netbsd_386
         with:
           name: vvs_netbsd_386
           path: |
@@ -394,7 +399,7 @@ jobs:
             build/vvs_netbsd_386.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_386.json
+        name: Upload vvs_netbsd_386.json
         with:
           name: vvs_netbsd_386.json
           path: |
@@ -402,7 +407,7 @@ jobs:
             build/vvs_netbsd_386.json.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_arm
+        name: Upload vvs_netbsd_arm
         with:
           name: vvs_netbsd_arm
           path: |
@@ -410,7 +415,7 @@ jobs:
             build/vvs_netbsd_arm.minisig
           compression-level: 9
       - uses: actions/upload-artifact@v4
-        name: upload artifact vvs_netbsd_arm.json
+        name: Upload vvs_netbsd_arm.json
         with:
           name: vvs_netbsd_arm.json
           path: |

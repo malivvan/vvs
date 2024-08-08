@@ -89,7 +89,7 @@ ifeq ($(shell echo $$SIGNING_PUB),)
 	@exit 1
 endif
 
-build: tools
+build: tools clean
 	@$(call go_build,"vvs","linux","amd64","0","netgo osusergo","./cmd")
 	@$(call go_build,"vvs","linux","386","0","netgo osusergo","./cmd")
 	@$(call go_build,"vvs","linux","arm64","0","netgo osusergo","./cmd")
