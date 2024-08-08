@@ -1,318 +1,141 @@
-<!doctype html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- This adapter normalizes cross-browser differences in WebRTC APIs. Currently necessary in order to support Firefox. -->
-    <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.1.2/adapter.min.js"
-            integrity="sha512-l40eBFtXx+ve5RryIELC3y6/OM6Nu89mLGQd7fg1C93tN6XrkC3supb+/YiD/Y+B8P37kdJjtG1MT1kOO2VzxA=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-    ></script>
+    <script type="module">
+        import P2PCF from './p2pcf.js'
+        const username = prompt("Please enter your name", 'user-' + Math.floor(Math.random() * 100000));
+        const p2pcf = new P2PCF(username, 'room', { workerUrl: "https://p2pcf.malivvan1177.workers.dev" })
+        window.p2pcf = p2pcf
+
+        const removePeerUi = clientId => {
+            document.getElementById(clientId)?.remove()
+            document.getElementById(`${clientId}-video`)?.remove()
+        }
+
+        const addPeerUi = sessionId => {
+            if (document.getElementById(sessionId)) return
+
+            const peerEl = document.createElement('div')
+            peerEl.style = 'display: flex;'
+
+            const name = document.createElement('div')
+            name.innerText = sessionId.substring(0, 5)
+
+            peerEl.id = sessionId
+            peerEl.appendChild(name)
+
+            document.getElementById('peers').appendChild(peerEl)
+        }
+
+        const addMessage = message => {
+            const messageEl = document.createElement('div')
+            messageEl.innerText = message
+
+            document.getElementById('messages').appendChild(messageEl)
+        }
+
+        let stream
+
+        p2pcf.on('peerconnect', peer => {
+            console.log('Peer connect', peer.id, peer)
+            if (stream) {
+                peer.addStream(stream)
+            }
+
+            peer.on('track', (track, stream) => {
+                console.log('got track', track)
+                const video = document.createElement('video')
+                video.id = `${peer.id}-video`
+                video.srcObject = stream
+                video.setAttribute('playsinline', true)
+                document.getElementById('videos').appendChild(video)
+                video.play()
+            })
+
+            addPeerUi(peer.id)
+        })
+
+        p2pcf.on('peerclose', peer => {
+            console.log('Peer close', peer.id, peer)
+            removePeerUi(peer.id)
+        })
+
+        p2pcf.on('msg', (peer, data) => {
+            addMessage(
+                peer.id.substring(0, 5) + ': ' + new TextDecoder('utf-8').decode(data)
+            )
+        })
+
+        const go = () => {
+            document.getElementById('session-id').innerText =
+                p2pcf.sessionId.substring(0, 5) + '@' + p2pcf.roomId + ':'
+
+            document.getElementById('send-button').addEventListener('click', () => {
+                const box = document.getElementById('send-box')
+                addMessage(p2pcf.sessionId.substring(0, 5) + ': ' + box.value)
+                p2pcf.broadcast(new TextEncoder().encode(box.value))
+                box.value = ''
+            })
+
+            document
+                .getElementById('video-button')
+                .addEventListener('click', async () => {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true })
+
+                    for (const peer of p2pcf.peers.values()) {
+                        peer.addStream(stream)
+                    }
+                })
+
+            p2pcf.start()
+        }
+
+        if (
+            document.readyState === 'complete' ||
+            document.readyState === 'interactive'
+        ) {
+            go()
+        } else {
+            window.addEventListener('DOMContentLoaded', go, { once: true })
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #peers div { padding: 8px; font-size: 18px; }
+        #messages div { padding: 8px; font-size: 18px; }
+    </style>
 </head>
+<body style="display: flex; flex-direction: column;">
+<h3 style="padding-top: 8px; margin: 0;">
+    P2PCF example
+</h3>
+<h6 style="padding-top: 8px; padding-bottom: 24px; margin: 0;">
+    Share this URL to connect via P2PCF + WebRTC
+</h6>
 
-
-<body>
-<div class="grid">
-    <h1>Calls Echo Demo</h1>
-    <div>
-        <h2>Local stream</h2>
-        <video id="local-video" autoplay muted></video>
+<div style="display: flex; flex-direction: row;">
+    <div style="display: flex; flex-direction: column; min-width: 200px;">
+        Peers:
+        <div id="peers" style="display: flex; flex-direction: column;">
+        </div>
     </div>
-    <div>
-        <h2>Remote echo stream</h2>
-        <video id="remote-video" autoplay></video>
+    <div style="display: flex; flex-direction: column;">
+        Messages:
+        <div id="messages" style="display: flex; flex-direction: column;">
+        </div>
     </div>
 </div>
-
-
-<script type="module">
-    // This is a class the defines the Calls API interactions.
-    // It's not an SDK but a example of how Calls API can be used.
-
-
-    // This is the App Id provided by the dashboard that identifies this Calls Application.
-    const appId = 'f7bf3fec56aec58788ca84ddf12d6757';
-    // DO NOT USE YOUR SECRET IN THE BROWSER FOR PRODUCTION. It should be kept and used server-side.
-    const appSecret = '264bcdf96fef615b994f3bb7ec9ed6b7aed6d7c172cf779426027accbe451e9a';
-
-
-    class CallsApp {
-        constructor(appId, basePath = 'https://rtc.live.cloudflare.com/v1') {
-            this.prefixPath = `${basePath}/apps/${appId}`;
-        }
-
-
-        async sendRequest(url, body, method = 'POST') {
-            const request = {
-                method: method,
-                mode: 'cors',
-                headers: {
-                    'content-type': 'application/json',
-                    Authorization: `Bearer ${appSecret}`
-                },
-                body: JSON.stringify(body)
-            };
-            const response = await fetch(url, request);
-            const result = await response.json();
-            return result;
-        }
-
-
-        checkErrors(result, tracksCount = 0) {
-            if (result.errorCode) {
-                throw new Error(result.errorDescription);
-            }
-            for (let i = 0; i < tracksCount; i++) {
-                if (result.tracks[i].errorCode) {
-                    throw new Error(
-                        `tracks[${i}]: ${result.tracks[i].errorDescription}`
-                    );
-                }
-            }
-        }
-
-
-        // newSession sends the initial offer and creates a session
-        async newSession(offerSDP) {
-            const url = `${this.prefixPath}/sessions/new`;
-            const body = {
-                sessionDescription: {
-                    type: 'offer',
-                    sdp: offerSDP
-                }
-            };
-            const result = await this.sendRequest(url, body);
-            this.checkErrors(result);
-            this.sessionId = result.sessionId;
-            return result;
-        }
-
-
-        // newTracks shares local tracks or gets tracks
-        async newTracks(trackObjects, offerSDP = null) {
-            const url = `${this.prefixPath}/sessions/${this.sessionId}/tracks/new`;
-            const body = {
-                sessionDescription: {
-                    type: 'offer',
-                    sdp: offerSDP
-                },
-                tracks: trackObjects
-            };
-            if (!offerSDP) {
-                delete body['sessionDescription'];
-            }
-            const result = await this.sendRequest(url, body);
-            this.checkErrors(result, trackObjects.length);
-            return result;
-        }
-
-
-        // sendAnswerSDP sends an answer SDP if a renegotiation is required
-        async sendAnswerSDP(answer) {
-            const url = `${this.prefixPath}/sessions/${this.sessionId}/renegotiate`;
-            const body = {
-                sessionDescription: {
-                    type: 'answer',
-                    sdp: answer
-                }
-            };
-            const result = await this.sendRequest(url, body, 'PUT');
-            this.checkErrors(result);
-        }
-    }
-
-
-    // Use Cloudflare's STUN server
-    self.pc = new RTCPeerConnection({
-        iceServers: [
-            {
-                urls: 'stun:stun.cloudflare.com:3478'
-            }
-        ],
-        bundlePolicy: 'max-bundle'
-    });
-
-
-    // In order to successfully establish a peer connection, we need at least one track to publish.
-    // In this case, we create two: video & audio
-    const localStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-    });
-
-
-    // Get the local video element in the HTML and set the source to show local stream
-    const localVideoElement = document.getElementById('local-video');
-    localVideoElement.srcObject = localStream;
-
-
-    // Add sendonly trancievers to the PeerConnection
-    self.transceivers = localStream.getTracks().map(track =>
-        self.pc.addTransceiver(track, {
-            direction: 'sendonly'
-        })
-    );
-
-
-    // Create a instance of CallsApp (defined below). Please note that this is not an official SDK but just a demo showing the HTML API.
-    self.app = new CallsApp(appId);
-
-
-    // Send the first offer and create a session. The returned sessionId is required to retrieve any track published by this peer
-    await self.pc.setLocalDescription(await self.pc.createOffer());
-    const newSessionResult = await self.app.newSession(
-        self.pc.localDescription.sdp
-    );
-    await self.pc.setRemoteDescription(
-        new RTCSessionDescription(newSessionResult.sessionDescription)
-    );
-
-
-    // Make the peer connection was established
-    await new Promise((resolve, reject) => {
-        self.pc.addEventListener('iceconnectionstatechange', ev => {
-            if (ev.target.iceConnectionState === 'connected') {
-                resolve();
-            }
-            setTimeout(reject, 5000, 'connect timeout');
-        });
-    });
-
-
-    // We associate a trackName to a transceiver identified by a mid (media ID). This way the track
-    // is remotely reachable by the tuple (sessionId, trackName)
-    let trackObjects = self.transceivers.map(transceiver => {
-        return {
-            location: 'local',
-            mid: transceiver.mid,
-            trackName: transceiver.sender.track.id
-        };
-    });
-
-
-    // Get local description, create a new track, set remote description with the response
-    await self.pc.setLocalDescription(await self.pc.createOffer());
-    const newLocalTracksResult = await self.app.newTracks(
-        trackObjects,
-        self.pc.localDescription.sdp
-    );
-    await self.pc.setRemoteDescription(
-        new RTCSessionDescription(newLocalTracksResult.sessionDescription)
-    );
-
-
-    // At this point in code, we are successfully sending local stream to Cloudflare Calls.
-    // Now, we will pull the same stream from Cloudflare Calls.
-
-
-    // Update trackObjects to reference the tracks as "remote"
-    trackObjects = trackObjects.map(trackObject => {
-        return {
-            location: 'remote',
-            sessionId: self.app.sessionId,
-            trackName: trackObject.trackName
-        };
-    });
-
-
-    // Prepare to receive the tracks before asking for them
-    const remoteTracksPromise = new Promise(resolve => {
-        let tracks = [];
-        self.pc.ontrack = event => {
-            tracks.push(event.track);
-            console.debug(`Got track mid=${event.track.mid}`);
-            if (tracks.length >= 2) {
-                // remote video & audio are ready
-                resolve(tracks);
-            }
-        };
-    });
-
-
-    // Calls API request to ask for the tracks
-    const newRemoteTracksResult = await self.app.newTracks(trackObjects);
-    if (newRemoteTracksResult.requiresImmediateRenegotiation) {
-        switch (newRemoteTracksResult.sessionDescription.type) {
-            case 'offer':
-                // We let Cloudflare know we're ready to receive the tracks
-                await self.pc.setRemoteDescription(
-                    new RTCSessionDescription(
-                        newRemoteTracksResult.sessionDescription
-                    )
-                );
-                await self.pc.setLocalDescription(await self.pc.createAnswer());
-                await self.app.sendAnswerSDP(self.pc.localDescription.sdp);
-                break;
-            case 'answer':
-                throw new Error('An offer SDP was expected');
-        }
-    }
-
-
-    // Once started receiving the tracks (video & audio) send the data to the video tag
-    const remoteTracks = await remoteTracksPromise;
-    const remoteVideoElement = document.getElementById('remote-video');
-    const remoteStream = new MediaStream();
-    remoteStream.addTrack(remoteTracks[0]);
-    remoteStream.addTrack(remoteTracks[1]);
-    remoteVideoElement.srcObject = remoteStream;
-</script>
-<style>
-    /* Styles are safe to ignore, just here for demo */
-
-
-    html {
-        color-scheme: light dark;
-        font-family:
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                'Segoe UI',
-                Roboto,
-                Oxygen,
-                Ubuntu,
-                Cantarell,
-                'Open Sans',
-                'Helvetica Neue',
-                sans-serif;
-        background: white;
-        color: black;
-    }
-    body,
-    h1,
-    h2 {
-        margin: 0;
-    }
-    h1,
-    h2 {
-        font-weight: 400;
-    }
-    h1 {
-        font-size: 1.5rem;
-        grid-column: 1 / -1;
-    }
-    h2 {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
-    }
-    video {
-        width: 100%;
-    }
-    .grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        gap: 1rem;
-    }
-
-
-    @media (max-width: 500px) {
-        .grid {
-            grid-template-columns: minmax(0, 1fr);
-        }
-    }
-</style>
+<div id="videos" style="display: flex; flex-direction: row;">
+</div>
+<div style="padding-top: 24px; display: flex; flex-direction: row;">
+    <div style="padding-right: 4px; "id="session-id"></div>
+    <form onsubmit="return false;">
+        <input id="send-box" type="text"/>
+        <button type="submit" id="send-button">Send</button>
+    </form>
+</div>
+<button style="width: 100px;" type="submit" id="video-button">Enable Video</button>
 </body>
 </html>
-
