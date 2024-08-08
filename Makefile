@@ -1,5 +1,5 @@
 .PHONY: build
-default: check clean build sign verify
+default: build
 
 define go_build
     $(eval $@_CGO = $(4))
@@ -88,8 +88,6 @@ ifeq ($(shell echo $$SIGNING_PUB),)
 	@echo "run 'make keygen' to generate a new keypair"
 	@exit 1
 endif
-
-check: check_key check_sec check_pub
 
 build: tools
 	@$(call go_build,"vvs","linux","amd64","0","netgo osusergo","./cmd")

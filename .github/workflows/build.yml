@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     name: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
       - name: Setup Go
@@ -14,303 +14,406 @@ jobs:
           go-version: '1.22.5'
       - name: Install dependencies
         run: go get .
-      - name: Build
+      - name: Building binaries
+        run: make build
+      - name: Signing binaries
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_SEC: ${{ secrets.SIGNING_SEC }}
+        run: make sign
+      - name: Verifying signatures
+        env:
           SIGNING_PUB: ${{ vars.SIGNING_PUB }}
-        run: make
+        run: make verify
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_checksums.txt
         with:
           name: vvs_checksums.txt
           path: |
             build/vvs_checksums.txt
             build/vvs_checksums.txt.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_checksums.txt.json
         with:
           name: vvs_linux_amd64
           path: |
             build/vvs_linux_amd64
             build/vvs_linux_amd64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_amd64.json
         with:
           name: vvs_linux_amd64.json
           path: |
             build/vvs_linux_amd64.json
             build/vvs_linux_amd64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_arm64
         with:
           name: vvs_linux_arm64
           path: |
             build/vvs_linux_arm64
             build/vvs_linux_arm64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_arm64.json
         with:
           name: vvs_linux_arm64.json
           path: |
             build/vvs_linux_arm64.json
             build/vvs_linux_arm64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_386
         with:
           name: vvs_linux_386
           path: |
             build/vvs_linux_386
             build/vvs_linux_386.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_386.json
         with:
           name: vvs_linux_386.json
           path: |
             build/vvs_linux_386.json
             build/vvs_linux_386.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_arm
         with:
           name: vvs_linux_arm
           path: |
             build/vvs_linux_arm
             build/vvs_linux_arm.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_arm.json
         with:
           name: vvs_linux_arm.json
           path: |
             build/vvs_linux_arm.json
             build/vvs_linux_arm.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_riscv64
         with:
           name: vvs_linux_riscv64
           path: |
             build/vvs_linux_riscv64
             build/vvs_linux_riscv64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_linux_riscv64.json
         with:
           name: vvs_linux_riscv64.json
           path: |
             build/vvs_linux_riscv64.json
             build/vvs_linux_riscv64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_darwin_amd64
         with:
           name: vvs_darwin_amd64
           path: |
             build/vvs_darwin_amd64
             build/vvs_darwin_amd64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_darwin_amd64.json
         with:
           name: vvs_darwin_amd64.json
           path: |
             build/vvs_darwin_amd64.json
             build/vvs_darwin_amd64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_darwin_arm64
         with:
           name: vvs_darwin_arm64
           path: |
             build/vvs_darwin_arm64
             build/vvs_darwin_arm64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_darwin_arm64.json
         with:
           name: vvs_darwin_arm64.json
           path: |
             build/vvs_darwin_arm64.json
             build/vvs_darwin_arm64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_darwin_386
         with:
           name: vvs_windows_amd64.exe
           path: |
             build/vvs_windows_amd64.exe
             build/vvs_windows_amd64.exe.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_amd64.exe.json
         with:
           name: vvs_windows_amd64.exe.json
           path: |
             build/vvs_windows_amd64.exe.json
             build/vvs_windows_amd64.exe.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_arm64.exe
         with:
           name: vvs_windows_arm64.exe
           path: |
             build/vvs_windows_arm64.exe
             build/vvs_windows_arm64.exe.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_arm64.exe.json
         with:
           name: vvs_windows_arm64.exe.json
           path: |
             build/vvs_windows_arm64.exe.json
             build/vvs_windows_arm64.exe.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_386.exe
         with:
           name: vvs_windows_386.exe
           path: |
             build/vvs_windows_386.exe
             build/vvs_windows_386.exe.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_386.exe.json
         with:
           name: vvs_windows_386.exe.json
           path: |
             build/vvs_windows_386.exe.json
             build/vvs_windows_386.exe.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_arm.exe
         with:
           name: vvs_windows_arm.exe
           path: |
             build/vvs_windows_arm.exe
             build/vvs_windows_arm.exe.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_arm.exe.json
         with:
           name: vvs_windows_arm.exe.json
           path: |
             build/vvs_windows_arm.exe.json
             build/vvs_windows_arm.exe.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_windows_riscv64.exe
         with:
           name: vvs_freebsd_amd64
           path: |
             build/vvs_freebsd_amd64
             build/vvs_freebsd_amd64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_amd64.json
         with:
           name: vvs_freebsd_amd64.json
           path: |
             build/vvs_freebsd_amd64.json
             build/vvs_freebsd_amd64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_arm64
         with:
           name: vvs_freebsd_arm64
           path: |
             build/vvs_freebsd_arm64
             build/vvs_freebsd_arm64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_arm64.json
         with:
           name: vvs_freebsd_arm64.json
           path: |
             build/vvs_freebsd_arm64.json
             build/vvs_freebsd_arm64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_386
         with:
           name: vvs_freebsd_386
           path: |
             build/vvs_freebsd_386
             build/vvs_freebsd_386.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_386.json
         with:
           name: vvs_freebsd_386.json
           path: |
             build/vvs_freebsd_386.json
             build/vvs_freebsd_386.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_arm
         with:
           name: vvs_freebsd_arm
           path: |
             build/vvs_freebsd_arm
             build/vvs_freebsd_arm.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_arm.json
         with:
           name: vvs_freebsd_arm.json
           path: |
             build/vvs_freebsd_arm.json
             build/vvs_freebsd_arm.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_riscv64
         with:
           name: vvs_freebsd_riscv64
           path: |
             build/vvs_freebsd_riscv64
             build/vvs_freebsd_riscv64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_freebsd_riscv64.json
         with:
           name: vvs_freebsd_riscv64.json
           path: |
             build/vvs_freebsd_riscv64.json
             build/vvs_freebsd_riscv64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_amd64
         with:
           name: vvs_openbsd_amd64
           path: |
             build/vvs_openbsd_amd64
             build/vvs_openbsd_amd64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_amd64.json
         with:
           name: vvs_openbsd_amd64.json
           path: |
             build/vvs_openbsd_amd64.json
             build/vvs_openbsd_amd64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_arm64
         with:
           name: vvs_openbsd_arm64
           path: |
             build/vvs_openbsd_arm64
             build/vvs_openbsd_arm64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_arm64.json
         with:
           name: vvs_openbsd_arm64.json
           path: |
             build/vvs_openbsd_arm64.json
             build/vvs_openbsd_arm64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_386
         with:
           name: vvs_openbsd_386
           path: |
             build/vvs_openbsd_386
             build/vvs_openbsd_386.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_386.json
         with:
           name: vvs_openbsd_386.json
           path: |
             build/vvs_openbsd_386.json
             build/vvs_openbsd_386.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_arm
         with:
           name: vvs_openbsd_arm
           path: |
             build/vvs_openbsd_arm
             build/vvs_openbsd_arm.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_openbsd_arm.json
         with:
           name: vvs_openbsd_arm.json
           path: |
             build/vvs_openbsd_arm.json
             build/vvs_openbsd_arm.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_amd64
         with:
           name: vvs_netbsd_amd64
           path: |
             build/vvs_netbsd_amd64
             build/vvs_netbsd_amd64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_amd64.json
         with:
           name: vvs_netbsd_amd64.json
           path: |
             build/vvs_netbsd_amd64.json
             build/vvs_netbsd_amd64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_arm64
         with:
           name: vvs_netbsd_arm64
           path: |
             build/vvs_netbsd_arm64
             build/vvs_netbsd_arm64.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_arm64.json
         with:
           name: vvs_netbsd_arm64.json
           path: |
             build/vvs_netbsd_arm64.json
             build/vvs_netbsd_arm64.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_386
         with:
           name: vvs_netbsd_386
           path: |
             build/vvs_netbsd_386
             build/vvs_netbsd_386.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_386.json
         with:
           name: vvs_netbsd_386.json
           path: |
             build/vvs_netbsd_386.json
             build/vvs_netbsd_386.json.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_arm
         with:
           name: vvs_netbsd_arm
           path: |
             build/vvs_netbsd_arm
             build/vvs_netbsd_arm.minisig
+          compression-level: 9
       - uses: actions/upload-artifact@v4
+        name: upload artifact vvs_netbsd_arm.json
         with:
           name: vvs_netbsd_arm.json
           path: |
             build/vvs_netbsd_arm.json
             build/vvs_netbsd_arm.json.minisig
+          compression-level: 9
