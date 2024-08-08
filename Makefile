@@ -59,7 +59,7 @@ tools:
 	@mkdir -p tools
 	GOBIN=$(shell pwd)/tools go install aead.dev/minisign/cmd/minisign@v0.3.0
 	GOBIN=$(shell pwd)/tools go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@v1.7.0
-
+	GOBIN=$(shell pwd)/tools go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
 clean:
 	@echo "CLEANING  ./build"
 	@mkdir -p ./build
