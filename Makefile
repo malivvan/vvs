@@ -92,6 +92,7 @@ endif
 check: check_key check_sec check_pub
 
 build: tools
+	@$(call go_build,"vvs","linux","amd64","0","netgo osusergo","./cmd")
 	@$(call go_build,"vvs","linux","386","0","netgo osusergo","./cmd")
 	@$(call go_build,"vvs","linux","arm64","0","netgo osusergo","./cmd")
 	@$(call go_build,"vvs","linux","arm","0","netgo osusergo","./cmd")

@@ -112,52 +112,52 @@ jobs:
             build/vvs_darwin_arm64.json.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_amd64
+          name: vvs_windows_amd64.exe
           path: |
-            build/vvs_windows_amd64
-            build/vvs_windows_amd64.minisig
+            build/vvs_windows_amd64.exe
+            build/vvs_windows_amd64.exe.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_amd64.json
+          name: vvs_windows_amd64.exe.json
           path: |
-            build/vvs_windows_amd64.json
-            build/vvs_windows_amd64.json.minisig
+            build/vvs_windows_amd64.exe.json
+            build/vvs_windows_amd64.exe.json.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_arm64
+          name: vvs_windows_arm64.exe
           path: |
-            build/vvs_windows_arm64
-            build/vvs_windows_arm64.minisig
+            build/vvs_windows_arm64.exe
+            build/vvs_windows_arm64.exe.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_arm64.json
+          name: vvs_windows_arm64.exe.json
           path: |
-            build/vvs_windows_arm64.json
-            build/vvs_windows_arm64.json.minisig
+            build/vvs_windows_arm64.exe.json
+            build/vvs_windows_arm64.exe.json.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_386
+          name: vvs_windows_386.exe
           path: |
-            build/vvs_windows_386
-            build/vvs_windows_386.minisig
+            build/vvs_windows_386.exe
+            build/vvs_windows_386.exe.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_386.json
+          name: vvs_windows_386.exe.json
           path: |
-            build/vvs_windows_386.json
-            build/vvs_windows_386.json.minisig
+            build/vvs_windows_386.exe.json
+            build/vvs_windows_386.exe.json.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_arm
+          name: vvs_windows_arm.exe
           path: |
-            build/vvs_windows_arm
-            build/vvs_windows_arm.minisig
+            build/vvs_windows_arm.exe
+            build/vvs_windows_arm.exe.minisig
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs_windows_arm.json
+          name: vvs_windows_arm.exe.json
           path: |
-            build/vvs_windows_arm.json
-            build/vvs_windows_arm.json.minisig
+            build/vvs_windows_arm.exe.json
+            build/vvs_windows_arm.exe.json.minisig
       - uses: actions/upload-artifact@v4
         with:
           name: vvs_freebsd_amd64
