@@ -22,5 +22,295 @@ jobs:
         run: make
       - uses: actions/upload-artifact@v4
         with:
-          name: vvs
-          path: build/vvs_*
+          name: vvs_checksums.txt
+          path: |
+            build/vvs_checksums.txt
+            build/vvs_checksums.txt.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_amd64
+          path: |
+            build/vvs_linux_amd64
+            build/vvs_linux_amd64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_amd64.json
+          path: |
+            build/vvs_linux_amd64.json
+            build/vvs_linux_amd64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_arm64
+          path: |
+            build/vvs_linux_arm64
+            build/vvs_linux_arm64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_arm64.json
+          path: |
+            build/vvs_linux_arm64.json
+            build/vvs_linux_arm64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_386
+          path: |
+            build/vvs_linux_386
+            build/vvs_linux_386.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_386.json
+          path: |
+            build/vvs_linux_386.json
+            build/vvs_linux_386.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_arm
+          path: |
+            build/vvs_linux_arm
+            build/vvs_linux_arm.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_arm.json
+          path: |
+            build/vvs_linux_arm.json
+            build/vvs_linux_arm.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_riscv64
+          path: |
+            build/vvs_linux_riscv64
+            build/vvs_linux_riscv64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_linux_riscv64.json
+          path: |
+            build/vvs_linux_riscv64.json
+            build/vvs_linux_riscv64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_darwin_amd64
+          path: |
+            build/vvs_darwin_amd64
+            build/vvs_darwin_amd64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_darwin_amd64.json
+          path: |
+            build/vvs_darwin_amd64.json
+            build/vvs_darwin_amd64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_darwin_arm64
+          path: |
+            build/vvs_darwin_arm64
+            build/vvs_darwin_arm64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_darwin_arm64.json
+          path: |
+            build/vvs_darwin_arm64.json
+            build/vvs_darwin_arm64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_amd64
+          path: |
+            build/vvs_windows_amd64
+            build/vvs_windows_amd64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_amd64.json
+          path: |
+            build/vvs_windows_amd64.json
+            build/vvs_windows_amd64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_arm64
+          path: |
+            build/vvs_windows_arm64
+            build/vvs_windows_arm64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_arm64.json
+          path: |
+            build/vvs_windows_arm64.json
+            build/vvs_windows_arm64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_386
+          path: |
+            build/vvs_windows_386
+            build/vvs_windows_386.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_386.json
+          path: |
+            build/vvs_windows_386.json
+            build/vvs_windows_386.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_arm
+          path: |
+            build/vvs_windows_arm
+            build/vvs_windows_arm.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_windows_arm.json
+          path: |
+            build/vvs_windows_arm.json
+            build/vvs_windows_arm.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_amd64
+          path: |
+            build/vvs_freebsd_amd64
+            build/vvs_freebsd_amd64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_amd64.json
+          path: |
+            build/vvs_freebsd_amd64.json
+            build/vvs_freebsd_amd64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_arm64
+          path: |
+            build/vvs_freebsd_arm64
+            build/vvs_freebsd_arm64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_arm64.json
+          path: |
+            build/vvs_freebsd_arm64.json
+            build/vvs_freebsd_arm64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_386
+          path: |
+            build/vvs_freebsd_386
+            build/vvs_freebsd_386.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_386.json
+          path: |
+            build/vvs_freebsd_386.json
+            build/vvs_freebsd_386.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_arm
+          path: |
+            build/vvs_freebsd_arm
+            build/vvs_freebsd_arm.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_arm.json
+          path: |
+            build/vvs_freebsd_arm.json
+            build/vvs_freebsd_arm.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_riscv64
+          path: |
+            build/vvs_freebsd_riscv64
+            build/vvs_freebsd_riscv64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_freebsd_riscv64.json
+          path: |
+            build/vvs_freebsd_riscv64.json
+            build/vvs_freebsd_riscv64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_amd64
+          path: |
+            build/vvs_openbsd_amd64
+            build/vvs_openbsd_amd64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_amd64.json
+          path: |
+            build/vvs_openbsd_amd64.json
+            build/vvs_openbsd_amd64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_arm64
+          path: |
+            build/vvs_openbsd_arm64
+            build/vvs_openbsd_arm64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_arm64.json
+          path: |
+            build/vvs_openbsd_arm64.json
+            build/vvs_openbsd_arm64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_386
+          path: |
+            build/vvs_openbsd_386
+            build/vvs_openbsd_386.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_386.json
+          path: |
+            build/vvs_openbsd_386.json
+            build/vvs_openbsd_386.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_arm
+          path: |
+            build/vvs_openbsd_arm
+            build/vvs_openbsd_arm.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_openbsd_arm.json
+          path: |
+            build/vvs_openbsd_arm.json
+            build/vvs_openbsd_arm.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_amd64
+          path: |
+            build/vvs_netbsd_amd64
+            build/vvs_netbsd_amd64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_amd64.json
+          path: |
+            build/vvs_netbsd_amd64.json
+            build/vvs_netbsd_amd64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_arm64
+          path: |
+            build/vvs_netbsd_arm64
+            build/vvs_netbsd_arm64.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_arm64.json
+          path: |
+            build/vvs_netbsd_arm64.json
+            build/vvs_netbsd_arm64.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_386
+          path: |
+            build/vvs_netbsd_386
+            build/vvs_netbsd_386.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_386.json
+          path: |
+            build/vvs_netbsd_386.json
+            build/vvs_netbsd_386.json.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_arm
+          path: |
+            build/vvs_netbsd_arm
+            build/vvs_netbsd_arm.minisig
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vvs_netbsd_arm.json
+          path: |
+            build/vvs_netbsd_arm.json
+            build/vvs_netbsd_arm.json.minisig
